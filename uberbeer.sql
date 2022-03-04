@@ -1,6 +1,8 @@
 CREATE database uberbeer;
 use uberbeer;
 
+/*drop database uberbeer;
+
 /* uberbeerlogico: */
 
 CREATE TABLE Cliente (
@@ -101,7 +103,6 @@ INSERT INTO CLIENTE(cpf,
  (94755260213,'Isis Pietra Camila Rocha', 'cep 93348-230 Rua Alto Uruguai numero 652, bairro Rincão, Novo Hamburgo RS',
 'isis_pietra_rocha@zulix.com.br', '1992-10-14','pietra@camila','305758999');
  
- select * from pedido;
  
  INSERT INTO Fornecedor (
     cnpj,
@@ -117,8 +118,39 @@ values
     data_compra,
     valor_total,
     cod_fornecedor) VALUES 
-    ('2022-02-22', 50.00, 5),
-    ('2022-02-23', 40.00, 6);
+    ('2022-02-22', 50.00, 1),
+    ('2022-02-23', 40.00, 2);
+    
+ INSERT INTO pedido (
+    data_pedido,
+    cod_cliente) VALUES 
+    ('2022-03-04', 1),
+    ('2022-03-06', 2);
+    
+select * from pedido;
+    
+INSERT INTO venda (
+    cod_produto,
+    cod_pedido,
+    qtd_pedido,
+    valor_venda)
+values 
+(1, 1, 10, 2000.00),
+(2, 2, 10, 2000.00); 
+    
+SELECT * from venda;
+
+INSERT INTO compra_produto (
+    cod_produto,
+    cod_compra,
+    qtd_compra,
+    valor_unit)
+values 
+(1, 1, 20, 5.00),
+(2, 2, 40, 10.00);
+
+select * from compra_produto;
+
 
 
 	 
