@@ -19,6 +19,7 @@ CREATE TABLE Cliente (
 CREATE TABLE Pedido (
     cod_pedido int PRIMARY KEY auto_increment,
     data_pedido date,
+    valor_total numeric(7,2),
     cod_cliente int,
     FOREIGN KEY (cod_cliente)
     REFERENCES Cliente (cod_cliente)
@@ -52,20 +53,20 @@ CREATE TABLE Compra (
     REFERENCES Fornecedor (cod_fornecedor)
 );
 
-CREATE TABLE venda (
-	cod_venda int PRIMARY KEY auto_increment,
+CREATE TABLE venda_item (
+	cod_venda_item int PRIMARY KEY auto_increment,
     cod_produto int,
     cod_pedido int,
     qtd_pedido int,
-    valor_venda numeric(7,2),
+    valor_item numeric(7,2),
     FOREIGN KEY (cod_produto)
     REFERENCES Produto (cod_produto),
     FOREIGN KEY (cod_pedido)
     REFERENCES Pedido (cod_pedido)
 );
 
-CREATE TABLE compra_produto (
-	cod_compra_prod int PRIMARY KEY auto_increment,
+CREATE TABLE compra_item (
+	cod_compra_item int PRIMARY KEY auto_increment,
     cod_produto int,
     cod_compra int,
     qtd_compra int,
@@ -123,24 +124,31 @@ values
     
  INSERT INTO pedido (
     data_pedido,
+    valor_total,
     cod_cliente) VALUES 
-    ('2022-03-04', 1),
-    ('2022-03-06', 2);
+    ('2022-03-04', 279.30, 1),
+    ('2022-03-06', 107.65, 2),
+    ('2022-03-10', 266.96, 3);
     
 select * from pedido;
     
-INSERT INTO venda (
+INSERT INTO venda_item (
     cod_produto,
     cod_pedido,
     qtd_pedido,
-    valor_venda)
+    valor_item)
 values 
-(1, 1, 10, 2000.00),
-(2, 2, 10, 2000.00); 
+(1, 1, 10, 15.70),
+(3, 1, 5, 15.70),
+(2, 1, 2, 21.90),
+(5, 2, 10, 4.99),
+(6, 2, 3, 19.25),
+(4, 3, 4, 11.99),
+(2, 3, 10, 21.90);
     
-SELECT * from venda;
+SELECT * from venda_item;
 
-INSERT INTO compra_produto (
+INSERT INTO compra_item (
     cod_produto,
     cod_compra,
     qtd_compra,
@@ -149,7 +157,7 @@ values
 (1, 1, 20, 5.00),
 (2, 2, 40, 10.00);
 
-select * from compra_produto;
+select * from compra_item;
 
 
 
