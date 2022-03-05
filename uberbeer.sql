@@ -41,7 +41,7 @@ CREATE TABLE Fornecedor (
     cnpj numeric(14),
     nome varchar(255),
     endereco varchar(255),
-    telefone numeric(20)
+    telefone varchar(30)
 );
 
 CREATE TABLE Compra (
@@ -111,8 +111,8 @@ INSERT INTO CLIENTE(cpf,
     endereco,
     telefone)
 values 
-(18494425765123,'AMBEV','RUA 105, NUMERO 55, BAIRRO ALPHAVILLE, BRASILIA DF', 041468465),
-(12341787008983, 'BADEN BADEN', 'BR 195, KM 500, UBERLANDIA MG', 349985466);
+(18494425765123,'AMBEV','RUA 105, NUMERO 55, BAIRRO ALPHAVILLE, BRASILIA DF', '041468465'),
+(12341787008983, 'BADEN BADEN', 'BR 195, KM 500, UBERLANDIA MG', '349985466');
 
 
  INSERT INTO Compra (
