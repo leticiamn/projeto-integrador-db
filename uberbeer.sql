@@ -1,7 +1,7 @@
 CREATE database uberbeer;
 use uberbeer;
 
-/*drop database uberbeer;
+/* drop database uberbeer;
 
 /* uberbeerlogico: */
 
@@ -126,8 +126,8 @@ values
     data_pedido,
     valor_total,
     cod_cliente) VALUES 
-    ('2022-03-04', 279.30, 1),
-    ('2022-03-06', 107.65, 2),
+    ('2022-01-04', 279.30, 1),
+    ('2022-02-06', 107.65, 2),
     ('2022-03-10', 266.96, 3);
     
 select * from pedido;
