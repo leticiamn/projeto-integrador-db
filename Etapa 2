@@ -24,7 +24,8 @@ INNER JOIN fornecedor f ON c.cod_fornecedor = f.cod_fornecedor);
 
 /* 02- Dê exemplos de consultas usando operadores de junção (ao menos 5). */ 
 
-/* a) Informe quais os nomes dos clientes que compraram bebidas acima de R$ 15.00. */
+/* a) Informe quais os nomes dos clientes que compraram bebidas 
+acima de R$ 15.00. */
 SELECT c.nome, pr.nome, vi.valor_item
 FROM cliente c
 INNER JOIN pedido p ON c.cod_cliente = p.cod_cliente
@@ -40,9 +41,11 @@ where p.data_pedido between '2022-01-01' and '2022-03-10';
 
 /* c)  Fornecedores dos produtos comprados no mês 12*/
 select f.nome, c.data_compra
-from fornecedor f left join compra c on c.cod_fornecedor = f.cod_fornecedor
+from fornecedor f 
+inner join compra c on c.cod_fornecedor = f.cod_fornecedor
 where month(c.data_compra) = 12;
 
+select * from compra;
 /* d) Clientes ativos que não compraram no mês 01 */
 select c.nome, p.data_pedido
 from pedido p 
@@ -57,9 +60,16 @@ inner join produto pr on pr.cod_produto = vi.cod_produto
 group by 1,2
 order by 2,1;
 	
+/* f) nome do cliente e valor total de compras*/
+
+/* g) nome do cliente e a quantidade de compras*/
+
+/* h) Total de compras e vendas dos produtos*/
+ 
 /* 03- Dê exemplos de consultas usando subconsultas*/
 
-/* a) Quantidade do produto 'Enseada Premium Lager' comprada no dia '2019-09-10'*/
+/* a) Quantidade do produto 'Enseada Premium Lager' comprada no dia 
+'2019-09-10'*/
 select ci.qtd_compra
 from compra_item ci 
 where ci.cod_compra = (select c.cod_compra from compra c 
@@ -79,7 +89,8 @@ from venda_item vi
 where vi.cod_produto in (select pr.cod_produto from produto pr
 where pr.fabricante = 'Capunga');
 
-/* d) Quantidade de produtos comprados pelo cliente 'Sebastião Hugo Henry Pereira' com teor alcolico acima de 5*/
+/* d) Quantidade de produtos comprados pelo cliente 
+'Sebastião Hugo Henry Pereira' com teor alcolico acima de 5*/
 select sum(vi.qtd_pedido)
 from venda_item vi 
 where vi.cod_produto in (select pr.cod_produto from produto pr
@@ -88,7 +99,8 @@ and vi.cod_pedido in (select p.cod_pedido from pedido p
 where p.cod_cliente = (select c.cod_cliente from cliente c
 where c.nome = 'Sebastião Hugo Henry Pereira'));
 
-/* e) Qual fabricante da cerveja com maior teor alcolico que foi comprada*/
+/* e) Qual fabricante da cerveja com maior teor alcolico que 
+foi comprada*/
 select pr.fabricante, max(pr.teor_alcolico)
 from produto pr
 where pr.cod_produto in (select ci.cod_produto from compra_item ci);
