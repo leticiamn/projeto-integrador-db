@@ -61,11 +61,25 @@ group by 1,2
 order by 2,1;
 	
 /* f) nome do cliente e valor total de compras*/
+select c.nome, p.valor_total
+FROM cliente c
+LEFT JOIN pedido p ON p.cod_cliente = c.cod_cliente;
 
 /* g) nome do cliente e a quantidade de compras*/
+select c.nome, count(p.cod_pedido)
+FROM cliente c
+LEFT JOIN pedido p ON p.cod_cliente = c.cod_cliente
+GROUP BY c.nome;
 
 /* h) Total de compras e vendas dos produtos*/
- 
+Select pr.nome, sum(p.valor_total)pedidos, sum(c.valor_total)compras
+ FROM pedido p
+ INNER Join venda_item vi ON vi.cod_pedido = p.cod_pedido
+ INNER JOIN produto pr ON pr.cod_produto = vi.cod_produto
+ INNER JOIN compra_item ci ON ci.cod_produto = pr.cod_produto
+ INNER JOIN compra c ON c.cod_compra = ci.cod_compra
+ group by 1;
+  
 /* 03- Dê exemplos de consultas usando subconsultas*/
 
 /* a) Quantidade do produto 'Enseada Premium Lager' comprada no dia 
