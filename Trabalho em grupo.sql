@@ -377,15 +377,57 @@ DROP FUNCTION to_date_seller;
 
 select to_date_seller('2022-05-01') AS DataVenda;
 
+/* Função 5: Recebe a quantidade do produto e retorna o valor do pedido total*/
+DELIMITER |
+CREATE FUNCTION fn_valor_total(var_valor_item decimal(7,2), var_qtd_pedido int)
+RETURNS decimal(7,2)
+DETERMINISTIC
+BEGIN
+DECLARE valor_total varchar(12);
+DECLARE erro CONDITION FOR SQLSTATE '45000';
+if(var_valor_item is null or var_qtd_pedido is null)
+then
+	SIGNAL erro
+	SET MESSAGE_TEXT = 'Valor e quantidade do item não pode ser nulo!';
+else
+	SET valor_total = (var_valor_item * var_qtd_pedido); 
+end if;
+RETURN valor_total;
+END |
+Delimiter ;
+
+select fn_valor_total(2,10) AS ValorTotal;
+
 
 /* 3 - Criação de triggers*/
 
-/* Trigger 1: */
+/* Trigger 1: - Arthutr */
+delimiter $
+create trigger validaEstoque before update on produto
+for each row
+begin
+declare estoqueAtual int;
+declare nuevoEstoqueAtual int;
+DECLARE erro CONDITION FOR SQLSTATE '45000';
+set estoqueAtual = (select qtd_estoque from Produto where cod_produto = new.cod_produto);
+	if(estoqueAtual >= 100) then
+		SIGNAL erro
+				SET MESSAGE_TEXT = 'Não é possivel adicionar mais produtos.';
+			else
+				set nuevoEstoqueAtual = new.qtd_estoque + estoqueAtual;
+                set new.qtd_estoque = nuevoEstoqueAtual;
+end if;
+end $
+delimiter ;
 
+drop trigger validaEstoque;
+drop function verificaQuantidadeEmEstoque1;
 
-/* Trigger 2: */
+update produto set qtd_estoque = 10 where cod_produto = 2;
 
-/* Trigger 3: Não aplicar desconto em compras abaixo de valor R$ 5000,00*/
+select * from produto;
+
+/* Trigger 2: Não aplicar desconto em compras abaixo de valor R$ 5000,00*/
 delimiter $
 CREATE TRIGGER tr_fornecedor_desconto BEFORE UPDATE ON compra
 FOR EACH ROW
@@ -412,7 +454,40 @@ end if;
 END $
 delimiter ;
 
+drop trigger tr_fornecedor_desconto;
+
 UPDATE compra SET valor_total = 4999 WHERE cod_compra = 9;
+
+/* Trigger 3: Verifica se a quantidade de itens em estoque é menor do que a quantidade desejada no pedido - Patrícia */
+delimiter $
+CREATE TRIGGER tr_valida_estoque_pedido BEFORE insert on venda_item
+FOR EACH ROW
+BEGIN
+DECLARE msg varchar(255);
+DECLARE quantidadePedido int;
+DECLARE quantidadeEstoque int;
+DECLARE erro CONDITION FOR SQLSTATE '45000';
+
+SET quantidadeEstoque = (SELECT qtd_estoque from produto p where p.cod_produto = new.cod_produto);
+SET quantidadePedido = new.qtd_pedido;
+	if (quantidadePedido > quantidadeEstoque) THEN
+				SIGNAL erro
+				SET MESSAGE_TEXT = 'Estoque insuficiente para realizar pedido.';
+end if;
+END $
+delimiter ;
+
+drop trigger tr_valida_estoque_pedido;
+
+INSERT INTO venda_item (
+    cod_produto,
+    cod_pedido,
+    qtd_pedido,
+    valor_item)
+ VALUES(1, 8, 100, 9.90);
+    
+SELECT * from produto;
+SELECT * from venda_item;
 
 /* Trigger 4: Aplicar desconto no mês de aniversário do cliente - Letícia*/
 delimiter $
